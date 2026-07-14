@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كازناخايا راديو | Kaznakhaya Radio</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: #0b0c10;
+            color: #c5c6c7;
+            padding: 40px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #1f2833;
+            padding: 40px 30px;
+            border-radius: 16px;
+            background: #151a21;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+            text-align: center;
+        }
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #66fcf1;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: #45f3ff;
+            margin-bottom: 35px;
+            opacity: 0.8;
+            font-style: italic;
+        }
+        .player-box {
+            background: #1f2833;
+            border-radius: 12px;
+            padding: 40px 20px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(102, 252, 241, 0.3);
+            transition: all 0.3s ease;
+        }
+        .player-box:hover {
+            border-color: #66fcf1;
+            box-shadow: 0 0 15px rgba(102, 252, 241, 0.15);
+        }
+        .status {
+            font-size: 12px;
+            color: #66fcf1;
+            margin-bottom: 20px;
+            display: inline-block;
+            background: rgba(102, 252, 241, 0.1);
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .track-title {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 25px;
+            font-weight: 500;
+        }
+        
+        /* زر التشغيل */
+        .play-btn {
+            background-color: #66fcf1;
+            color: #0b0c10;
+            border: none;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            font-size: 24px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 25px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(102, 252, 241, 0.3);
+            outline: none;
+        }
+        .play-btn:hover {
+            transform: scale(1.08);
+            background-color: #45f3ff;
+        }
+        .play-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* شريط التحكم بالصوت */
+        .volume-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 10px;
+            background: rgba(11, 12, 16, 0.4);
+            padding: 10px 15px;
+            border-radius: 30px;
+        }
+        .volume-btn {
+            background: none;
+            border: none;
+            color: #66fcf1;
+            font-size: 18px;
+            cursor: pointer;
+            outline: none;
+            transition: color 0.2s;
+        }
+        .volume-btn:hover {
+            color: #45f3ff;
+        }
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            max-width: 150px;
+            height: 6px;
+            border-radius: 5px;
+            background: #1f2833;
+            outline: none;
+            cursor: pointer;
+            border: 1px solid rgba(102, 252, 241, 0.2);
+        }
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #66fcf1;
+            cursor: pointer;
+            box-shadow: 0 0 5px rgba(102, 252, 241, 0.5);
+            transition: transform 0.1s;
+        }
+        .volume-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #45f3ff;
+        }
+        
+        .info-status {
+            font-size: 12px;
+            color: #ff4d4d;
+            margin-top: 15px;
+            display: none;
+        }
+        .info-section {
+            text-align: right;
+            margin-top: 20px;
+            border-top: 1px solid rgba(197, 198, 199, 0.1);
+            padding-top: 25px;
+        }
+        .info-section h3 {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
+        .info-section p {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #c5c6c7;
+        }
+        .footer {
+            margin-top: 35px;
+            font-size: 11px;
+            color: #45f3ff;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">KAZNAKHAYA</div>
+        <div class="subtitle">راديو أونلاين - البث التلقائي 24/7</div>
+        
+        <div class="player-box">
+            <span class="status" id="liveIndicator">● جاهز للتشغيل</span>
+            <div class="track-title" id="trackTitle">بث راديو كازناخايا المباشر</div>
+            
+            <button class="play-btn" id="playButton" onclick="togglePlay()">▶</button>
+            
+            <div class="volume-container">
+                <button class="volume-btn" id="muteButton" onclick="toggleMute()">🔊</button>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.8" oninput="setVolume(this.value)">
+            </div>
+            
+            <div class="info-status" id="statusMessage">جاري التحميل...</div>
+            
+            <audio id="radioPlayer" preload="none">
+                <source src="https://icecast.shoutcast-proxy.workers.dev/s12.myradiostream.com:19850/;" type="audio/mpeg">
+                متصفحك لا يدعم مشغل الصوت الحالي.
+            </audio>
+        </div>
+
+        <div class="info-section">
+            <h3>حول راديو كازناخايا</h3>
+            <p>منصة بث صوتية متكاملة تابعة لأستوديو Kaznakhaya الإبداعي، تعمل على مدار الساعة لتقديم أجمل المقطوعات البرمجية، الفواصل الهادئة، والمحتوى الصوتي المتميز بجودة عالية وبدون انقطاع.</p>
+        </div>
+        
+        <div class="footer">
+            Designed by Kaznakhaya Creative Studio © 2026
+        </div>
+    </div>
+
+    <script>
+        const player = document.getElementById('radioPlayer');
+        const playBtn = document.getElementById('playButton');
+        const statusMsg = document.getElementById('statusMessage');
+        const liveIndicator = document.getElementById('liveIndicator');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const muteBtn = document.getElementById('muteButton');
+
+         // رابط البث الآمن الذي يتجاوز جدار الحماية الأمني للمتصفحات بنجاح
+       const streamUrl = "http://s12.myradiostream.com:19850/;";
+        let previousVolume = 0.8;
+
+        // تعيين مستوى الصوت الافتراضي عند التحميل
+        player.volume = 0.8;
+
+        function togglePlay() {
+            if (player.paused) {
+                player.src = streamUrl + "?nocache=" + new Date().getTime();
+                statusMsg.style.display = 'block';
+                statusMsg.innerText = "جاري الاتصال بالسيرفر المباشر...";
+                statusMsg.style.color = "#66fcf1";
+
+                player.play()
+                    .then(() => {
+                        playBtn.innerText = "⏸";
+                        statusMsg.innerText = "يعمل الآن بجودة ممتازة (HTTPS)";
+                        liveIndicator.innerText = "● بث مباشر متواصل (Auto-DJ)";
+                        liveIndicator.style.background = "rgba(102, 252, 241, 0.2)";
+                    })
+                    .catch(error => {
+                        console.error("Error playing audio:", error);
+                        statusMsg.style.display = 'block';
+                        statusMsg.style.color = "#ff4d4d";
+                        statusMsg.innerText = "فشل الاتصال. تأكد من أن حالة السيرفر في لوحة التحكم هي (Online, Ready).";
+                    });
+            } else {
+                player.pause();
+                player.src = ""; 
+                playBtn.innerText = "▶";
+                statusMsg.innerText = "تم الإيقاف مؤقتاً";
+                statusMsg.style.color = "#c5c6c7";
+            }
+        }
+
+        // التحكم في الصوت عبر شريط السلايدر
+        function setVolume(val) {
+            player.volume = val;
+            if (val == 0) {
+                muteBtn.innerText = "🔇";
+            } else if (val < 0.5) {
+                muteBtn.innerText = "🔉";
+                player.muted = false;
+            } else {
+                muteBtn.innerText = "🔊";
+                player.muted = false;
+            }
+        }
+
+        // كتم وإلغاء كتم الصوت بنقرة واحدة
+        function toggleMute() {
+            if (player.muted) {
+                player.muted = false;
+                volumeSlider.value = previousVolume;
+                setVolume(previousVolume);
+            } else {
+                previousVolume = player.volume > 0 ? player.volume : 0.8;
+                player.muted = true;
+                volumeSlider.value = 0;
+                muteBtn.innerText = "🔇";
+            }
+        }
+
+        player.addEventListener('error', function(e) {
+            statusMsg.style.display = 'block';
+            statusMsg.style.color = "#ff4d4d";
+            statusMsg.innerText = "حدث خطأ في الاتصال بالسيرفر. يرجى التحقق من تشغيل البث في لوحة التحكم الخاصة بك.";
+        });
+    </script>
+</body>
+</html>
+
+
+
+
